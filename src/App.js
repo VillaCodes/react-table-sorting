@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import axios from "axios";
 import {useEffect, useState} from "react";
@@ -10,8 +9,10 @@ const fetchData = () => {
 //https://randomuser.me/api/?results=20
 function App() {
 
+  const [data, setData] = useState([]);
+
   useEffect (() => {
-   fetchData();
+   fetchData().then(setData);
   }, [])
 
 
