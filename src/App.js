@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 //the function below would preferably be inside of a util/api folder+file
 const fetchData = () => {
   return axios.get("https://randomuser.me/api/?results=20").then((response) => {
-    console.log(response)
+    console.log(response.data)
     const {results} = response.data;
     return results
   }).catch((error) => console.error(error))
