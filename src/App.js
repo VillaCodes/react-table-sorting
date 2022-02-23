@@ -12,6 +12,19 @@ const fetchData = () => {
   }).catch((error) => console.error(error))
 };
 
+//helper function for flattening object data. recursive for nested objects
+function flattenObject(object, parent, res = {}) {
+  for (let key in object) {
+    let propName = parent ? parent + "-" + key : key;
+    if (typeof object[key] === typeof {} && !Array.isArray(object[key])) {
+      flattenObject(object[key], propName, res);
+    } else {
+      res[propName] = object[key];
+    };
+  };
+  return res
+}
+
 //https://randomuser.me/api/?results=20
 function App() {
 
@@ -27,6 +40,7 @@ function App() {
   }, []);
 
   console.log(locations)
+  console.log(flattenObject(locations[0]))
 
   // const table = users.map((user, userId) => {
   //   return (
