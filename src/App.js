@@ -35,12 +35,9 @@ function App() {
    fetchData().then((people) => {
      setUsers(people);
      //the map below could also employ destructuring. people.map(({location}) => location)
-     setLocations(people.map((person) => person.location))
+     setLocations(people.map(({location}) => flattenObject(location)))
    });
   }, []);
-
-  console.log(locations)
-  console.log(flattenObject(locations[0]))
 
   // const table = users.map((user, userId) => {
   //   return (
