@@ -26,10 +26,13 @@ function flattenObject(object, parent, res = {}) {
 }
 
 //https://randomuser.me/api/?results=20
+
 function App() {
 
   const [users, setUsers] = useState([]);
   const [locations, setLocations] = useState([]);
+  console.log(locations)
+  //flattenedLocations features each flattenedLocation object within an array
 
   useEffect (() => {
    fetchData().then((people) => {
@@ -38,7 +41,6 @@ function App() {
      setLocations(people.map(({location}) => flattenObject(location)))
    });
   }, []);
-
   // const table = users.map((user, userId) => {
   //   return (
   //   <tb>
@@ -47,19 +49,31 @@ function App() {
   //   </tr>
   //   </tb>
   // )})
+  /*{ {users.map((user, userId) => <p key = {userId}>
+  {user.name.first})} }*/
+
+  const extractHeaders = (flattenedLocationsArray) => {
+    const headers = []; 
+    
+    if (flattenedLocationsArray[0]) {
+    const firstLocation = flattenedLocationsArray[0];
+    Object.keys(firstLocation).forEach((key) => headers.push(key))
+    }
+    return headers;
+  }
+
+  const headersArray = extractHeaders(locations)
+
+  console.log(headersArray)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Sandbox!</h1>
-        <p>
-          Let's make some magic happen!
-        </p>
-        {users.map((user, userId) => <p key = {userId}>
-          {user.name.first}
-        </p> )}
-      </header>
+        <header className="App-header">
+          <h1>Sandbox!</h1>
+        </header>
     </div>
   );
 }
+
 
 export default App;
