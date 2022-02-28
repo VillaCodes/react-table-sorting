@@ -13,16 +13,32 @@ const fetchData = () => {
 };
 
 //helper function for flattening object data. recursive for nested objects
-function flattenObject(object, parent, res = {}) {
-  for (let key in object) {
-    let propName = parent ? parent + "-" + key : key;
-    if (typeof object[key] === typeof {} && !Array.isArray(object[key])) {
-      flattenObject(object[key], propName, res);
-    } else {
-      res[propName] = object[key];
-    };
-  };
-  return res
+/**
+ * @param ob Object                 The object to flatten
+ * @param prefix String (Optional)  The prefix to add before each key, also used for recursion
+ **/
+ function flattenObject(ob, prefix = false, result = null) {
+  result = result || {};
+
+  // Preserve empty objects and arrays, they are lost otherwise
+  if (prefix && typeof ob === 'object' && ob !== null && Object.keys(ob).length === 0) {
+    result[prefix] = Array.isArray(ob) ? [] : {};
+    return result;
+  }
+
+  prefix = prefix ? prefix + '.' : '';
+
+  for (const i in ob) {
+    if (Object.prototype.hasOwnProperty.call(ob, i)) {
+      if (typeof ob[i] === 'object' && ob[i] !== null) {
+        // Recursion on deeper objects
+        flattenObject(ob[i], prefix + i, result);
+      } else {
+        result[prefix + i] = ob[i];
+      }
+    }
+  }
+  return result;
 }
 
 //https://randomuser.me/api/?results=20
@@ -54,7 +70,7 @@ function App() {
 
   const extractHeaders = (flattenedLocationsArray) => {
     const headers = []; 
-    
+
     if (flattenedLocationsArray[0]) {
     const firstLocation = flattenedLocationsArray[0];
     Object.keys(firstLocation).forEach((key) => headers.push(key))
