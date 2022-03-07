@@ -50,6 +50,10 @@ function App() {
   console.log(locations)
   //flattenedLocations features each flattenedLocation object within an array
 
+  const sortColumn = (header) => {
+    console.log(header);
+  };
+
   useEffect (() => {
    fetchData().then((people) => {
      setUsers(people);
@@ -57,14 +61,7 @@ function App() {
      setLocations(people.map(({location}) => flattenObject(location)))
    });
   }, []);
-  // const table = users.map((user, userId) => {
-  //   return (
-  //   <tb>
-  //   <tr>
-  //     <th>{user.location}</th>
-  //   </tr>
-  //   </tb>
-  // )})
+
   /*{ {users.map((user, userId) => <p key = {userId}>
   {user.name.first})} }*/
 
@@ -84,9 +81,25 @@ function App() {
 
   return (
     <div className="App">
-        <header className="App-header">
-          <h1>Sandbox!</h1>
-        </header>
+    <h1>Hello, Code Sandbox!</h1>
+    <h2>Code it on up, pal</h2>
+    <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+        <table style={{border: "1px solid black", textAlign: "center"}}>
+        <thead>
+            <tr>
+              {headersArray.map((header, idx) => <th key={idx} onClick = {(header) => sortColumn(header)}>{header}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+              {locations.map((location, idx) => {
+                return <tr key={idx}>{Object.values(location).map((locationValue, valueIdx) => (
+                  <td key={valueIdx}>{locationValue}</td>
+                ))}
+                        </tr>
+              })}
+          </tbody>
+        </table>
+    </div>
     </div>
   );
 }
