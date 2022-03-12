@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 //the function below would preferably be inside of a util/api folder+file
 const fetchData = () => {
   return axios.get("https://randomuser.me/api/?results=20").then((response) => {
-    console.log(response.data)
+    // console.log(response.data)
     const {results} = response.data;
     return results
   }).catch((error) => console.error(error))
@@ -52,6 +52,17 @@ function App() {
 
   const sortColumn = (header) => {
     console.log(header);
+    
+    const sortedLocations = locations.sort((a, b) => {
+    let valueA = a[header];
+    let valueB = b[header];
+
+    if (valueA < valueB) return -1;
+    if (valueA > valueB) return 1;
+    return 0;
+    })
+
+    setLocations(sortedLocations);
   };
 
   useEffect (() => {
@@ -87,7 +98,7 @@ function App() {
         <table style={{border: "1px solid black", textAlign: "center"}}>
         <thead>
             <tr>
-              {headersArray.map((header, idx) => <th key={idx} onClick = {(header) => sortColumn(header)}>{header}</th>)}
+              {headersArray.map((header, idx) => <th key={idx} onClick = {() => sortColumn(header)}>{header}</th>)}
             </tr>
           </thead>
           <tbody>
